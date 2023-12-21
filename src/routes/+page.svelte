@@ -15,7 +15,7 @@
 
 	let point = { r: 2, theta: 0 };
 
-	$: cartesian = { x: point.r * Math.cos(point.theta * Math.PI / 180), point.r * Math.sin(point.theta * Math.PI / 180) };
+	$: cartesian = { x: point.r * Math.cos(point.theta * Math.PI / 180), y: point.r * Math.sin(point.theta * Math.PI / 180) };
 
 	let interval = 10;
 
