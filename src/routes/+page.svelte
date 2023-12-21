@@ -13,9 +13,10 @@
 	let axis_color = "#000000";
 	let point_color = "#FF0000";
 
-	let point = { r: 2, theta: 0 };
+	let point_r = 2;
+	let point_theta = 0;
 
-	$: cartesian = { x: point.r * Math.cos(point.theta * Math.PI / 180), y: point.r * Math.sin(point.theta * Math.PI / 180) };
+	$: cartesian = { x: point_r * Math.cos(point_theta * Math.PI / 180), y: point_r * Math.sin(point_theta * Math.PI / 180) };
 
 	let interval = 10;
 
@@ -74,11 +75,8 @@
 
 		ctx.fillStyle = point_color;
 
-		const point_x = point.r * Math.cos(point.theta * Math.PI / 180);
-		const point_y = point.r * Math.sin(point.theta * Math.PI / 180);
-
 		ctx.beginPath();
-		ctx.arc(center.x + point_x * interval, center.y - point_y * interval, 2, 0, 2 * Math.PI);
+		ctx.arc(center.x + cartesian.x * interval, center.y - cartesian.y * interval, 2, 0, 2 * Math.PI);
 		ctx.fill();
 	};
 
@@ -109,8 +107,8 @@
 			const dx = x - center.x;
 			const dy = y - center.y;
 
-			point.r = Math.sqrt(dx * dx + dy * dy) / interval;
-			point.theta = Math.atan2(-dy, dx) * 180 / Math.PI;
+			point_r = Math.sqrt(dx * dx + dy * dy) / interval;
+			point_theta = Math.atan2(-dy, dx) * 180 / Math.PI;
 
 			update();
 		};
@@ -139,8 +137,8 @@
 	<h1>Polar Coordinate Visualizer</h1>
 
 	<div class="info">
-		<p>Polar: ({decimals(point.r, 2, true)}, {decimals(point.theta, 2, true)}°)</p>
-		<p>Cartesian: ({decimals(point.r * Math.cos(point.theta * Math.PI / 180), 2, true)}, {decimals(point.r * Math.sin(point.theta * Math.PI / 180), 2, true)})</p>
+		<p>Polar: ({decimals(point_r, 2, true)}, {decimals(point_theta, 2, true)}°)</p>
+		<p>Cartesian: ({decimals(point_r * Math.cos(point_theta * Math.PI / 180), 2, true)}, {decimals(point_r * Math.sin(point_theta * Math.PI / 180), 2, true)})</p>
 	</div>
 
 	<canvas id="canvas" width="400" height="400" style="border: 1px solid black" />
@@ -168,14 +166,14 @@
 
 	<div class="setting">
 		<label for="point_r">Point R: </label>
-		<input type="range" name="point_r" id="point_r" bind:value={point.r} on:input={update} min=0 max={200/interval} step=0.01>
-		<span>{decimals(point.r, 2, true)}</span>
+		<input type="range" name="point_r" id="point_r" bind:value={point_r} on:input={update} min=0 max={200/interval} step=0.01>
+		<span>{decimals(point_r, 2, true)}</span>
 	</div>
 
 	<div class="setting">
 		<label for="point_theta">Point Theta: </label>
-		<input type="range" name="point_theta" id="point_theta" bind:value={point.theta} on:input={update} min=-180 max=180 step=0.01>
-		<span>{point.theta >= 0 ? "+" : ""}{pad(decimals(point.theta, 2), 6, true)}°</span>
+		<input type="range" name="point_theta" id="point_theta" bind:value={point_theta} on:input={update} min=-180 max=180 step=0.01>
+		<span>{point_theta >= 0 ? "+" : ""}{pad(decimals(point_theta, 2), 6, true)}°</span>
 	</div>
 
 	<div class="setting">
