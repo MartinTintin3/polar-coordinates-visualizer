@@ -180,8 +180,8 @@
 
 	<div class="setting">
 		<label for="point_theta">Point X: </label>
-		<input type="range" name="point_x" id="point_x" bind:value={cartesian.x} on:input={update} min=-180 max=180 step=0.01>
-		<span>{point.theta >= 0 ? "+" : ""}{pad(decimals(cartesian.x, 2), 6, true)}°</span>
+		<input type="range" name="point_x" id="point_x" bind:value={cartesian.x} on:input={update} min=-200 max=200 step=0.01>
+		<span>{cartesian.x >= 0 ? "+" : ""}{pad(decimals(cartesian.x, 2), 6, true)}°</span>
 	</div>
 </div>
 
