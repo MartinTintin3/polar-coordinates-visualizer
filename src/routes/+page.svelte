@@ -15,13 +15,16 @@
 
 	let point = { r: 2, theta: 0 };
 
+	$: cartesian = { x: point.r * Math.cos(point.theta * Math.PI / 180), point.r * Math.sin(point.theta * Math.PI / 180) };
+
 	let interval = 10;
 
 	const addZeroes = num => num.toFixed(Math.max(num.toString().split('.')[1]?.length, 2) || 2)
 
-	const decimals = (n, d) => {
+	const decimals = (n, d, pad) => {
 		const factor = 10 ** d;
-		const result = addZeroes(Math.round(n * factor) / factor);
+		let result = Math.round(n * factor) / factor;
+		if (pad) result = addZeroes(result);
 		return result;
 	};
 
@@ -136,8 +139,8 @@
 	<h1>Polar Coordinate Visualizer</h1>
 
 	<div class="info">
-		<p>Polar: ({decimals(point.r, 2)}, {decimals(point.theta, 2)}°)</p>
-		<p>Cartesian: ({decimals(point.r * Math.cos(point.theta * Math.PI / 180), 2)}, {decimals(point.r * Math.sin(point.theta * Math.PI / 180), 2)})</p>
+		<p>Polar: ({decimals(point.r, 2, true)}, {decimals(point.theta, 2, true)}°)</p>
+		<p>Cartesian: ({decimals(point.r * Math.cos(point.theta * Math.PI / 180), 2, true)}, {decimals(point.r * Math.sin(point.theta * Math.PI / 180), 2, true)})</p>
 	</div>
 
 	<canvas id="canvas" width="400" height="400" style="border: 1px solid black" />
@@ -166,13 +169,19 @@
 	<div class="setting">
 		<label for="point_r">Point R: </label>
 		<input type="range" name="point_r" id="point_r" bind:value={point.r} on:input={update} min=0 max={200/interval} step=0.01>
-		<span>{decimals(point.r, 2)}</span>
+		<span>{decimals(point.r, 2, true)}</span>
 	</div>
 
 	<div class="setting">
 		<label for="point_theta">Point Theta: </label>
 		<input type="range" name="point_theta" id="point_theta" bind:value={point.theta} on:input={update} min=-180 max=180 step=0.01>
-		<span>{point.theta >= 0 ? "+" : ""}{pad(decimals(point.theta, 2), 6)}°</span>
+		<span>{point.theta >= 0 ? "+" : ""}{pad(decimals(point.theta, 2), 6, true)}°</span>
+	</div>
+
+	<div class="setting">
+		<label for="point_theta">Point X: </label>
+		<input type="range" name="point_x" id="point_x" bind:value={cartesian.x} on:input={update} min=-180 max=180 step=0.01>
+		<span>{point.theta >= 0 ? "+" : ""}{pad(decimals(cartesian.x, 2), 6, true)}°</span>
 	</div>
 </div>
 
