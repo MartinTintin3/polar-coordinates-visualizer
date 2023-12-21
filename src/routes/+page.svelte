@@ -19,7 +19,6 @@
 
 	const addZeroes = num => num.toFixed(Math.max(num.toString().split('.')[1]?.length, 2) || 2)
 
-
 	const decimals = (n, d) => {
 		const factor = 10 ** d;
 		const result = addZeroes(Math.round(n * factor) / factor);
@@ -97,20 +96,7 @@
 			ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 		}
 
-		update();
-
-		let dragging = false;
-
-		canvas.addEventListener("mousedown", e => {
-			dragging = true;
-		});
-
-		canvas.addEventListener("mouseup", e => {
-			dragging = false;
-		});
-
-		canvas.addEventListener("mousemove", e => {
-			if (!dragging) return;
+		const mouse_point = e => {
 			const rect = canvas.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
@@ -124,6 +110,24 @@
 			point.theta = Math.atan2(-dy, dx) * 180 / Math.PI;
 
 			update();
+		};
+
+		update();
+
+		let dragging = false;
+
+		canvas.addEventListener("mousedown", e => {
+			dragging = true;
+			mouse_point(e);
+		});
+
+		canvas.addEventListener("mouseup", e => {
+			dragging = false;
+		});
+
+		canvas.addEventListener("mousemove", e => {
+			if (!dragging) return;
+			mouse_point(e);
 		});
 	});
 </script>
